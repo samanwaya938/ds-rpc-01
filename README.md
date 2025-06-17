@@ -7,7 +7,7 @@ This project is a **Role-Based Retrieval-Augmented Generation (RAG) System** bui
 ### 🔹 Use Case
 
 * ✉️ An HR personnel can retrieve HR-specific data.
-* 🏢 A finance officer can only access finance-related information.
+* 🏢 A marketing manager can only access marketing-related information.
 * 🎓 Custom roles with isolated document knowledgebases.
 
 Each role has a dedicated **vectorstore** created with **FAISS** using pre-uploaded documents. At query time, only the appropriate store is used to generate a context-aware response.
@@ -41,11 +41,14 @@ my_project/
 │   └── frontend/
 │       └── app.py           # Streamlit frontend app
 ├── db_stores/               # Contains vectorstore_hr, vectorstore_finance, etc.
+├── resources/               # All the role specific custom data 
 │
 ├── requirements.txt         # Project dependencies
 ├── Dockerfile               # Docker configuration
 ├── .env                     # API keys (not included in repo)
 ├── .dockerignore            # Docker ignore rules
+├── setup.py                 # Project Setup File
+├── README.md                # Instruction file
 ```
 
 ---
@@ -79,10 +82,12 @@ pip install -r requirements.txt
 ```
 
 ### Create .env file
+
 Create .env file in the root directory and save your own OPENAI_API_KEY and GGOGLE_API_KEY. Make sure their should not be any whitespace around "="
 
 ### Run the store.py file
-To create vectore database run the store.py file using the following command. It has to be run only once.
+
+To create vectore database run the store.py file using the following command. It has to be run only once. Once run the db_stores folder will be created in the root directory and it will be conatains all the role specific vector store.
 ```bash
 python app/backend/store.py
 ```
@@ -114,7 +119,7 @@ docker buildx build -t rag-multirole:latest .
 ### 🚚 Pull from DockerHub
 
 ```bash
-docker pull your-dockerhub-username/rag-multirole:latest
+docker pull samanwaya/rag-multirole
 ```
 
 ### 🔄 Run Docker Container with User API Keys
@@ -142,20 +147,42 @@ docker run -p 8000:8000 -p 8501:8501 \
 ## 📅 Usage Instructions
 
 1. **Login First**
+   
+These are sample data to login and test
 
-   * ID: `Sam`
-   * Password: `123`
+   * ID: `alice`
+   * Password: `1234`
+   * Role: `engineering`
+---  
+   * ID: `bob`
+   * Password: `abcd`
    * Role: `hr`
+---  
+   * ID: `charlie`
+   * Password: `xyz`
+   * Role: `finance`
+---  
+   * ID: `harry`
+   * Password: `1122`
+   * Role: `general`
+--- 
+   * ID: `jack`
+   * Password: `xxyyzz`
+   * Role: `marketing`
+---
+2. ***Ask Questions***
 
-2. **Query Input**
+    After successful login, you can ask role-specific questions using the chat input. The application uses the relevant vectorstore for the selected role.
 
-   * Ask questions relevant to your assigned role.
-   * Example: "What are the onboarding steps for new employees?"
+   Example:
 
-3. **Role-Based Vectorstores**
+       "What are the onboarding steps for new employees?"
 
-   * e.g., `vectorstore_hr` is used for the HR role.
-   * All vectorstores are loaded from `db_stores/` directory.
+3. ***Behind the Scenes***
+
+   * Role general loads vectorstore_general
+   * Role finance loads vectorstore_finance
+   * Stored vector DBs are in db_stores/
 
 ---
 
@@ -165,13 +192,17 @@ docker run -p 8000:8000 -p 8501:8501 \
 | ------- | ------------------------------- |
 | HR      | `db_stores/vectorstore_hr`      |
 | Finance | `db_stores/vectorstore_finance` |
-| Legal   | `db_stores/vectorstore_legal`   |
+| General | `db_stores/vectorstore_general`   |
 
 ---
 
 ## 📄 Screenshots
+### Login Page
+![image](https://github.com/user-attachments/assets/fd6647e7-c238-4ebb-a8fc-bfb356770262)
 
-*(To be added)*
+### Chat Page
+![image](https://github.com/user-attachments/assets/40179358-2029-4991-bd01-ce0c2e0cb436)
+
 
 ## 📹 Demo Video
 
@@ -179,10 +210,10 @@ docker run -p 8000:8000 -p 8501:8501 \
 
 ---
 
-## 🌐 Badges
+## 📛 Badges
 
-* Python:&#x20;
-* Docker:&#x20;
+* Python: 3.10.8
+* Docker: Image available on DockerHub
 
 ---
 
@@ -196,7 +227,7 @@ Want to contribute or suggest improvements? Feel free to raise issues or submit 
 
 * [LangChain](https://github.com/langchain-ai/langchain)
 * [OpenAI](https://openai.com)
-* [Google Generative AI](https://ai.google/discover/generative-ai/)
+* [Google Generative AI](https://aistudio.google.com/)
 * [Streamlit](https://streamlit.io)
 * [FastAPI](https://fastapi.tiangolo.com)
 
