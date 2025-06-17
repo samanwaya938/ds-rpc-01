@@ -1,0 +1,32 @@
+# Byte-compiled / cache
+__pycache__/
+*.py[cod]
+*.so
+
+# Logs
+*.log
+
+# Virtual envs
+venv/
+.env/
+.env
+
+# Vector store files (can be large & regenerated)
+<!-- db_stores/ -->
+
+# Ignore notebooks or dev files
+*.ipynb
+*.md
+
+# Ignore git
+.git/
+.gitignore
+
+# Misc
+.DS_Store
+*.zip
+*.tar.gz
+
+# Docker-related
+docker-compose.yml
+Dockerfile
